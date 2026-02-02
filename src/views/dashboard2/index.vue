@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <h1>首页</h1>
+    <h1>首页2</h1>
     <el-button type="primary">Element Plus 按钮示例</el-button>
   </div>
 </template>

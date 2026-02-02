@@ -13,12 +13,13 @@
 
 <style scoped lang="scss">
 .app-main {
-  /* 50= navbar  50  */
+  /* 50= 导航栏高度  50  */
   width: 100%;
   position: relative;
   overflow-y: auto;
   padding: 20px;
   flex: 1;
+  background-color: $main-bg; // 使用新变量
 }
 
 .fade-transform-leave-active,

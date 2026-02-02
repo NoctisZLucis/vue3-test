@@ -8,14 +8,14 @@
     </div>
     <div class="right-menu">
       <el-dropdown>
-        <span class="el-dropdown-link">
-          Admin
+        <span class="el-dropdown-link" style="color: #fff;">
+          管理员
           <el-icon class="el-icon--right"><arrow-down /></el-icon>
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>Profile</el-dropdown-item>
-            <el-dropdown-item divided>Logout</el-dropdown-item>
+            <el-dropdown-item>个人中心</el-dropdown-item>
+            <el-dropdown-item divided>退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -38,21 +38,23 @@ const { toggleSidebar } = appStore;
   height: 50px;
   overflow: hidden;
   position: relative;
-  background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  background: $navbar-bg;
+  // box-shadow: 0 1px 4px rgba(0,21,41,.08); // 移除阴影以获得无缝效果
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
+  color: #fff; // 深色导航栏使用白色文字
 
   .hamburger-container {
     padding: 0 15px;
     cursor: pointer;
     transition: background .3s;
     -webkit-tap-highlight-color: transparent;
+    color: #fff; // 汉堡菜单图标颜色
 
     &:hover {
-      background: rgba(0, 0, 0, .025)
+      background: rgba(255, 255, 255, .1) // 轻微悬浮效果
     }
   }
 

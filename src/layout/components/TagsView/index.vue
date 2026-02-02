@@ -24,7 +24,7 @@ import { Close } from '@element-plus/icons-vue';
 
 // 简单模拟 TagsView 状态，实际项目应放入 Pinia
 const visitedViews = ref<any[]>([
-  { path: '/dashboard', meta: { title: 'Dashboard', affix: true } }
+  { path: '/dashboard', meta: { title: '首页', affix: true } }
 ]);
 
 const route = useRoute();
@@ -95,6 +95,7 @@ onMounted(() => {
       margin-left: 5px;
       margin-top: 4px;
       text-decoration: none;
+      border-radius: 2px; // Slightly rounded corners
       
       &:first-of-type {
         margin-left: 15px;
@@ -105,13 +106,15 @@ onMounted(() => {
       }
       
       &.active {
-        background-color: #42b983;
-        color: #fff;
-        border-color: #42b983;
+        background-color: #fff; // 标签布局中激活背景通常为白色或主色
+        color: $primary-color; // 激活文本颜色
+        border-color: #d8dce5;
+        border-bottom-color: #fff; // 与内容区域连接，或保持简单高亮
+        font-weight: bold;
         
         &::before {
           content: '';
-          background: #fff;
+          background: $primary-color; // 圆点颜色
           display: inline-block;
           width: 8px;
           height: 8px;
@@ -119,6 +122,11 @@ onMounted(() => {
           position: relative;
           margin-right: 2px;
         }
+      }
+
+      // 悬浮效果
+      &:hover {
+        color: $primary-color;
       }
     }
   }

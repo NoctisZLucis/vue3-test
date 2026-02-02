@@ -1,14 +1,22 @@
-// Theme Colors
+// 主题颜色
 $bg-color-dark: #242424;
 $bg-color-light: #ffffff;
-$primary-color: #646cff;
-$primary-color-hover: #535bf2;
+$primary-color: #3B82F6; // 更新以匹配 Element Plus 覆盖样式
+$primary-color-hover: #60A5FA;
 $text-color-dark-theme: rgba(255, 255, 255, 0.87);
 $text-color-light-theme: #213547;
 $button-bg-dark: #1a1a1a;
 $button-bg-light: #f9f9f9;
 
-// Breakpoints
+// 布局主题
+$menu-bg: #151e2b;
+$menu-text: #bfcbd9;
+$menu-active-text: #ffffff;
+$menu-hover-bg: #1f2d3d; // 比背景稍亮
+$navbar-bg: #151e2b;
+$main-bg: #f0f2f5; // 浅灰内容背景
+
+// 断点
 $breakpoint-mobile: 768px;
 $breakpoint-desktop-min: 1440px;
 $breakpoint-desktop-base: 1920px;

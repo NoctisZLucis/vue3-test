@@ -31,6 +31,9 @@ src/
   - 变量名：语义化。
 - **注释要求**: 
   - 所有方法必须包含 JSDoc 中文注释。
+  - 所有注释必须使用中文。
+- **内容要求**: 
+  - 所有文字内容必须翻译成中文。
 
 ## 4. 核心实现模板
 
@@ -248,44 +251,73 @@ defineExpose({
 ## 8. Layout 组件规范
 
 ### 8.1 整体布局 (Layout Structure)
-- **入口文件**: `src/layout/index.vue`，作为应用的根布局容器。
-- **布局模式**: 采用经典的左侧菜单 + 顶部导航 + 内容区域布局。
-- **CSS 结构**: 使用 `app-wrapper` 包裹，通过 `classObj` 动态控制侧边栏的展开/折叠样式。
+- **入口文件**: `src/layout/index.vue`，采用 Flex 布局管理整体结构。
+- **DOM 结构**:
+  ```html
+  <div class="app-wrapper">
+    <Sidebar />             <!-- 左侧侧边栏 (Fixed) -->
+    <div class="main-container">
+      <div class="fixed-header">
+        <Navbar />          <!-- 顶部导航 -->
+        <TagsView />        <!-- 历史标签页 -->
+      </div>
+      <AppMain />           <!-- 业务页面出口 -->
+    </div>
+  </div>
+  ```
+- **交互逻辑**: 通过 Pinia (`appStore.sidebar.opened`) 控制 `.app-wrapper` 的类名 (`openSidebar`/`hideSidebar`)，从而通过 CSS Transition 实现侧边栏的平滑展开与折叠。
 
-### 8.2 核心组件构成
-- **Sidebar (侧边栏)**:
-  - **路径**: `src/layout/components/Sidebar`
-  - **功能**: 使用 `SidebarItem` 组件实现递归菜单渲染。
-  - **数据**: 基于 `userStore` 或路由表的 `routes` 动态生成。
-  - **状态**: 依赖 Pinia `appStore` 的 `sidebar.opened` 状态。
-- **Navbar (顶部导航)**:
-  - **路径**: `src/layout/components/Navbar.vue`
-  - **功能**: 集成 `Hamburger` (折叠开关)、`Breadcrumb` (面包屑) 和右侧功能区 (个人中心等)。
-- **TagsView (标签页导航)**:
-  - **路径**: `src/layout/components/TagsView`
-  - **功能**: 记录用户访问历史，支持右键菜单 (关闭当前/其他/所有)。
-  - **交互**: 与 `keep-alive` 配合实现页面缓存。
-- **AppMain (主内容区)**:
-  - **路径**: `src/layout/components/AppMain.vue`
-  - **功能**: 封装 `<router-view>`，处理页面切换过渡动画 (`transition`)。
+### 8.2 核心组件构成 (Core Components)
 
-### 8.3 组件引用规范 (Import Guidelines)
-- **统一出口**: 所有 Layout 子组件必须通过 `src/layout/components/index.ts` 统一导出。
-- **引用方式**: 在 `layout/index.vue` 中应使用显式索引导入，避免类型推断错误：
+#### 1. Sidebar (侧边栏)
+- **路径**: `src/layout/components/Sidebar`
+- **数据源**: 直接读取 `vue-router` 的 `routes` 配置 (`useRouter().options.routes`)，实现了 **路由即菜单**。
+- **递归渲染**: 核心组件 `SidebarItem.vue` 支持无限级菜单嵌套。
+  - **单节点**: 无子路由或只有一个有效子路由时，渲染为 `<el-menu-item>`。
+  - **嵌套节点**: 有多个子路由时，渲染为 `<el-sub-menu>` 并递归调用自身。
+- **路径解析**: 组件内建 `resolvePath` 方法，自动处理父子路由路径的拼接（例如 `/nested` + `/menu1` -> `/nested/menu1`）。
+
+#### 2. Navbar (顶部导航)
+- **路径**: `src/layout/components/Navbar.vue`
+- **样式**: 深色主题设计，与侧边栏背景色保持一致 (`#151e2b`)，移除底部阴影以实现视觉一体化。
+- **功能**: 集成 `Hamburger` (折叠控制器) 和右侧用户信息/操作区。
+
+#### 3. TagsView (标签页导航)
+- **路径**: `src/layout/components/TagsView`
+- **样式**: 采用 **Tab 选项卡** 风格。
+  - **激活态**: 白色背景 + 主色文字 + 底部连接线，强调当前上下文。
+  - **交互**: 支持点击切换、右键菜单（关闭当前/其他/全部）。
+
+#### 4. AppMain (主内容区)
+- **路径**: `src/layout/components/AppMain.vue`
+- **架构**: 封装 `<router-view>` 并通过 `v-slot` 集成 `<transition>` 动画 (`fade-transform`) 和 `<keep-alive>` 缓存机制。
+- **样式**: 设定全局背景色 (`$main-bg: #f0f2f5`)，提供视觉层级区分。
+
+### 8.3 最佳实践 (Best Practices)
+- **Layout 常量化**: 在 `src/router/index.ts` 中，应提取 `Layout` 为常量 (`const Layout = () => import('@/layout/index.vue')`)，避免重复编写 `import` 语句，便于统一维护。
+- **组件统一导出**: 所有 Layout 子组件应在 `src/layout/components/index.ts` 中统一导出，保持引用路径简洁。
   ```typescript
+  export { default as Navbar } from './Navbar.vue'
+  export { default as Sidebar } from './Sidebar/index.vue'
+  export { default as AppMain } from './AppMain.vue'
+  ```
   
 ## 9. 样式开发规范 (Style Guidelines)
 
-### 9.1 技术方案
-- **预处理器**: SCSS
-- **命名规范**: BEM (Block Element Modifier) 规范，例如 `.user-table__header--active`。
-- **作用域**: 必须在 `<style>` 标签上添加 `scoped`。
+### 9.1 架构设计 (Architecture)
+- **入口文件**: 样式虽最终作用于 `index.html`，但必须通过 `src/main.ts` 引入 `src/styles/index.scss` 进行统一注入，严禁在 `index.html` 中编写 `<style>`。
+- **根节点**: `#app` (定义在 `index.html`) 是应用挂载点，必须设置 `width: 100%` 和 `height: 100%` 以继承 `html, body` 的高度。
 
-### 9.2 响应式适配策略
+### 9.2 技术方案
+- **预处理器**: SCSS (开启全局变量自动注入)。
+- **命名规范**: BEM (Block Element Modifier) 规范。
+- **作用域**: 组件内样式必须添加 `scoped` 属性。
+
+### 9.3 响应式适配策略
 - **基准分辨率**: 1920px * 1080px (设计稿基准)。
 - **最低支持**: 1440px * 900px (布局不破碎，无横向滚动条)。
 - **适配工具**: 使用 SCSS Mixins 处理断点，避免在业务代码中散落 `@media`。
 
-### 9.3 滚动条规范
+### 9.4 滚动条规范
 - **全局禁止滚动**: `html`, `body`, `#app` 必须设置 `overflow: hidden`。
 - **内容区滚动**: 滚动条只允许出现在 `AppMain` 组件的内部视图容器中。
