@@ -1,0 +1,42 @@
+/* Sidebar Menu Customization */
+.sidebar-container {
+    // 覆盖 Element Plus 菜单背景色变量 (如果使用了 CSS 变量模式)
+    // 或者直接覆盖样式
+
+    .el-menu-item {
+
+        // 选中状态
+        &.is-active {
+            background-color: #6b7280 !important; // 灰色
+        }
+
+        // Hover 状态
+        &:hover {
+            background-color: #6b7280 !important; // 灰色
+            color: #ffffff;
+        }
+    }
+
+    // 子菜单标题 Hover
+    .el-sub-menu__title:hover {
+        background-color: #6b7280 !important; // 灰色
+    }
+
+    // 嵌套菜单 Active
+    .nest-menu .el-menu-item.is-active {
+        background-color: #6b7280 !important;
+    }
+
+    // 折叠模式下隐藏文字和箭头
+    .el-menu--collapse {
+        .el-sub-menu__title {
+            span {
+                display: none; // 隐藏文字
+            }
+
+            .el-sub-menu__icon-arrow {
+                display: none; // 隐藏箭头
+            }
+        }
+    }
+}

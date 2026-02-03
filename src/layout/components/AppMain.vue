@@ -15,9 +15,10 @@
 .app-main {
   /* 50= 导航栏高度  50  */
   width: 100%;
+  height: 100vh;
   position: relative;
   overflow-y: auto;
-  padding: 20px;
+  padding: 0;
   flex: 1;
   background-color: $main-bg; // 使用新变量
 }

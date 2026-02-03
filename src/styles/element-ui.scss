@@ -1,0 +1,20 @@
+/* 覆盖 Element Plus 表格默认样式 */
+.el-table {
+
+    /* 表头样式 */
+    th.el-table__cell {
+        background-color: #f0f4f8 !important;
+        font-weight: 400;
+        color: #303032;
+        font-size: 14px;
+        height: 41px;
+        padding: 0 !important; // 强制去除 padding 以控制高度
+    }
+
+    /* 行样式 */
+    td.el-table__cell {
+        height: 41px;
+        padding: 0 !important; // 强制去除 padding 以控制高度
+    }
+
+}

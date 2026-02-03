@@ -15,7 +15,14 @@ description: 提交代码更改并推送到指定分支
    git status
    ```
 
-2. **添加更改**
+
+2. **配置忽略**
+   确保 `node_modules` 不会被提交。
+   ```bash
+   if (!(Select-String -Path .gitignore -Pattern "node_modules" -ErrorAction SilentlyContinue)) { Add-Content .gitignore "`nnode_modules" }
+   ```
+
+3. **添加更改**
    根据 `Files` 参数执行添加操作。
    - **默认情况** (添加所有更改):
      ```bash
@@ -26,13 +33,13 @@ description: 提交代码更改并推送到指定分支
      git add <file1> <file2> ...
      ```
 
-3. **提交更改**
+4. **提交更改**
    使用指定的 `Message` 进行提交。
    ```bash
    git commit -m "<Message>"
    ```
 
-4. **推送到远程**
+5. **推送到远程**
    获取当前分支并推送到远程仓库。
    ```bash
    # 获取当前分支名称

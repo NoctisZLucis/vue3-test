@@ -18,6 +18,9 @@ service.interceptors.request.use(
         if (token && config.headers) {
             config.headers['Authorization'] = `Bearer ${token}`;
         }
+        // 禁止缓存
+        config.headers['Cache-Control'] = 'no-cache';
+        config.headers['Pragma'] = 'no-cache';
         return config;
     },
     (error) => Promise.reject(error)

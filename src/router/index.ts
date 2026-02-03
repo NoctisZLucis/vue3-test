@@ -15,11 +15,18 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import('@/views/dashboard/index.vue'),
                 meta: { title: '首页', icon: 'House' }
             },
+        ]
+    },
+    {
+        path: '/task',
+        component: Layout,
+        redirect: '/task/index',
+        children: [
             {
-                path: 'dashboard2',
-                name: 'Dashboard2',
-                component: () => import('@/views/dashboard2/index.vue'),
-                meta: { title: '首页2', icon: 'House' }
+                path: 'index',
+                name: 'TaskManage',
+                component: () => import('@/views/task/index.vue'),
+                meta: { title: '任务管理', icon: 'List' }
             }
         ]
     },
@@ -31,13 +38,13 @@ const routes: Array<RouteRecordRaw> = [
         children: [
             {
                 path: 'menu1',
-                component: () => import('@/views/dashboard/index.vue'), // 复用作示例
+                component: () => import('@/views/dashboard/index.vue'),
                 name: 'Menu1',
                 meta: { title: '菜单一', icon: 'Document' }
             },
             {
                 path: 'menu2',
-                component: () => import('@/views/dashboard/index.vue'), // 复用作示例
+                component: () => import('@/views/dashboard/index.vue'),
                 name: 'Menu2',
                 meta: { title: '菜单二', icon: 'Document' },
                 children: [
