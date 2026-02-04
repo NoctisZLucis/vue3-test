@@ -1,4 +1,4 @@
-# Vue 3 + Vite + ElementPlus 脚手架规范
+# Vue 3 + Vite + TS 企业级项目规范手册
 
 ## 1. 核心技术栈 (Tech Stack)
 - **Framework**: Vue 3 (Composition API + <script setup>)
@@ -113,6 +113,56 @@ const router = createRouter({
 export default router;
 ```
 
+### 4.3 全局消息提示封装 (src/utils/message.ts)
+防止消息弹窗无限堆叠，封装 `ElMessage` 实现最大显示数量限制（默认 3 条）。
+```typescript
+import { ElMessage, type MessageHandler, type MessageParams } from 'element-plus';
+
+const messageInstances: MessageHandler[] = [];
+const MAX_MESSAGE_COUNT = 3;
+
+/**
+ * 封装 ElMessage，限制最大同时显示数量
+ */
+const Message = (options: MessageParams) => {
+    if (messageInstances.length >= MAX_MESSAGE_COUNT) {
+        const oldestMessage = messageInstances.shift();
+        oldestMessage?.close();
+    }
+    // ... logic to create instance and manage queue
+    const instance = ElMessage(options);
+    messageInstances.push(instance);
+    return instance;
+};
+// 挂载 success/warning/info/error 静态方法...
+export default Message as typeof ElMessage;
+```
+**使用**: 在业务代码中直接引入 `@/utils/message` 替代 `element-plus` 的 `ElMessage`。
+
+### 4.4 Mock 数据规范 (mock/)
+项目使用 `vite-plugin-mock` 进行本地数据模拟。
+- **目录**: `mock/` 根目录。
+- **文件格式**: `export default [...] as MockMethod[]`。
+- **示例**:
+```typescript
+import { MockMethod } from 'vite-plugin-mock';
+
+export default [
+    {
+        url: '/api/resource/list',
+        method: 'get',
+        response: () => {
+            return {
+                code: 200,
+                msg: 'success',
+                data: [/* ... */]
+            };
+        },
+    },
+] as MockMethod[];
+```
+
+
 ## 5. AI 指令集
 - 请严格遵循上述目录结构生成代码。
 - 生成 Vue 组件时必须使用 TypeScript 和 <script setup> 语法。
@@ -138,15 +188,27 @@ export default router;
 8. **Expose**: 使用 `defineExpose` 暴露给父组件的方法或属性。
 
 
-## 7. 组件封装规范 (Component Encapsulation)
+## 7. 架构设计模式 (Architecture Patterns)
 
-### 7.1 封装原则
+### 7.1 分层架构
+项目严格遵循 **视图(View) - 逻辑(Logic) - 接口(API)** 分离的原则：
+- **View (`views/`)**: 仅负责 UI 渲染和简单的交互事件绑定。
+- **Logic (`<script setup>`)**: 处理组件状态、表单校验、数据组装。复杂逻辑应抽离为 Combinables (`hooks/`)。
+- **API (`api/`)**: 所有 HTTP 请求必须封装为强类型的 API 函数，禁止在组件中直接调用 `request.get/post`。
+
+### 7.2 数据流向
+`Component` -> `API Function` -> `Request Interceptor` -> `Server/Mock` -> `Response Interceptor` -> `Component`。
+异常处理统一在 **Response Interceptor** 中进行 Toast 提示，组件仅需处理在此之后的业务逻辑（或通过 `try/catch` 处理特定错误）。
+
+## 8. 组件封装规范 (Component Encapsulation)
+
+### 8.1 封装原则
 - **单一职责**: 一个组件只做一件事。
 - **Props 强类型**: 必须为每个 Prop 定义类型和默认值。
 - **样式隔离**: 必须使用 `scoped`，禁止在组件内书写全局样式。
 - **Slots 扩展**: 关键节点预留 `slot`，增加组件灵活性。
 
-### 7.2 标准组件示例 (src/components/BaseDialog.vue)
+### 8.2 标准组件示例 (src/components/BaseDialog.vue)
 
 ```vue
 <template>
@@ -250,9 +312,9 @@ defineExpose({
 </style>
 ```
 
-## 8. Layout 组件规范
+## 9. Layout 组件规范
 
-### 8.1 整体布局 (Layout Structure)
+### 9.1 整体布局 (Layout Structure)
 - **入口文件**: `src/layout/index.vue`，采用 Flex 布局管理整体结构。
 - **DOM 结构**:
   ```html
@@ -269,7 +331,7 @@ defineExpose({
   ```
 - **交互逻辑**: 通过 Pinia (`appStore.sidebar.opened`) 控制 `.app-wrapper` 的类名 (`openSidebar`/`hideSidebar`)，从而通过 CSS Transition 实现侧边栏的平滑展开与折叠。
 
-### 8.2 核心组件构成 (Core Components)
+### 9.2 核心组件构成 (Core Components)
 
 #### 1. Sidebar (侧边栏)
 - **路径**: `src/layout/components/Sidebar`
@@ -295,7 +357,7 @@ defineExpose({
 - **架构**: 封装 `<router-view>` 并通过 `v-slot` 集成 `<transition>` 动画 (`fade-transform`) 和 `<keep-alive>` 缓存机制。
 - **样式**: 设定全局背景色 (`$main-bg: #f0f2f5`)，提供视觉层级区分。
 
-### 8.3 最佳实践 (Best Practices)
+### 9.3 最佳实践 (Best Practices)
 - **Layout 常量化**: 在 `src/router/index.ts` 中，应提取 `Layout` 为常量 (`const Layout = () => import('@/layout/index.vue')`)，避免重复编写 `import` 语句，便于统一维护。
 - **组件统一导出**: 所有 Layout 子组件应在 `src/layout/components/index.ts` 中统一导出，保持引用路径简洁。
   ```typescript
@@ -304,24 +366,36 @@ defineExpose({
   export { default as AppMain } from './AppMain.vue'
   ```
   
-## 9. 样式开发规范 (Style Guidelines)
+## 10. 样式开发规范 (Style Guidelines)
 
-### 9.1 架构设计 (Architecture)
+### 10.1 架构设计 (Architecture)
 - **入口文件**: 样式虽最终作用于 `index.html`，但必须通过 `src/main.ts` 引入 `src/styles/index.scss` 进行统一注入，严禁在 `index.html` 中编写 `<style>`。
 - **根节点**: `#app` (定义在 `index.html`) 是应用挂载点，必须设置 `width: 100%` 和 `height: 100%` 以继承 `html, body` 的高度。
 
-### 9.2 技术方案
+### 10.2 技术方案
 - **预处理器**: SCSS (开启全局变量自动注入)。
 - **命名规范**: BEM (Block Element Modifier) 规范。
 - **作用域**: 组件内样式必须添加 `scoped` 属性。
 
-### 9.3 响应式适配策略
+### 10.3 响应式适配策略
 - **基准分辨率**: 1920px * 1080px (设计稿基准)。
 - **最低支持**: 1440px * 900px (布局不破碎，无横向滚动条)。
 - **适配工具**: 使用 SCSS Mixins 处理断点，避免在业务代码中散落 `@media`。
 - **Flex/Grid 优先**：禁止使用 `float` 或固定宽度的 `div`。
 - **容器优先原则**：使用 `@container` 代替 `@media`，确保功能模块在任何父容器下都能自适应
 
-### 9.4 滚动条规范
+### 10.4 滚动条规范
 - **全局禁止滚动**: `html`, `body`, `#app` 必须设置 `overflow: hidden`。
 - **内容区滚动**: 滚动条只允许出现在 `AppMain` 组件的内部视图容器中。
+
+### 10.5 样式文件组织 (src/styles/)
+```text
+src/styles/
+├── element-ui.scss   # 覆盖 Element Plus 默认样式
+├── index.scss        # 样式入口，统一引入其他文件
+├── mixins.scss       # SCSS 混合宏 (Mixins)
+├── reset.scss        # 浏览器样式重置
+├── sidebar.scss      # 侧边栏专用样式
+└── variables.scss    # 全局 SCSS 变量
+```
+

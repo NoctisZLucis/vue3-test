@@ -66,3 +66,22 @@ export const getTaskTypes = () => {
 export const getTaskList = (params: any) => {
     return request.get<any, { list: TaskItem[], total: number }>('/task/list', { params });
 };
+
+/**
+ * 删除任务
+ */
+export const deleteTask = (id: string) => {
+    return request.post('/api/task/delete', { id });
+};
+
+export interface UserItem {
+    label: string;
+    value: string;
+}
+
+/**
+ * 获取用户列表
+ */
+export const getTaskUsers = () => {
+    return request.get<any, UserItem[]>('/task/users');
+};

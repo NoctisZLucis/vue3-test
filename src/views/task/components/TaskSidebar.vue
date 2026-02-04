@@ -4,7 +4,7 @@
       <template #default>
         <div class="filter-group">
           <div class="filter-title">
-            <span v-show="!collapsed">筛选器</span>
+            <span v-show="showContent">筛选器</span>
             <div class="actions">
                <el-icon class="action-icon" @click="handleReset" title="重置筛选"><RefreshRight /></el-icon>
                <el-icon class="action-icon" @click="handleToggle" :title="collapsed ? '展开' : '收起'">
@@ -14,7 +14,7 @@
             </div>
           </div>
           
-          <div v-show="!collapsed">
+          <div v-show="showContent">
             <div class="filter-section" v-if="options.priority?.length">
               <div class="section-header">优先级</div>
               <el-checkbox-group v-model="localFilters.priority" class="vertical-checkbox" @change="handleChange">
@@ -51,7 +51,7 @@
 <script setup lang="ts">
 import { RefreshRight, Fold, Expand } from '@element-plus/icons-vue';
 import type { TaskFilters } from '@/api/task';
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 interface Filters {
   priority: string[];
@@ -89,6 +89,24 @@ const handleReset = () => {
 const handleToggle = () => {
   emit('toggle');
 };
+
+const showContent = ref(!props.collapsed);
+
+watch(
+  () => props.collapsed,
+  (newVal) => {
+    if (newVal) {
+      // 折叠：立即隐藏内容
+      showContent.value = false;
+    } else {
+      // 展开：延迟 200ms 显示内容
+      setTimeout(() => {
+        showContent.value = true;
+      }, 200);
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped lang="scss">
@@ -117,14 +135,24 @@ const handleToggle = () => {
   }
 
   .filter-title {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
-    margin-bottom: 15px;
+    color: #303133;
+    background-color: #ecf5ff; // 浅蓝色背景
+    padding: 10px 15px; // 增加内边距
+    margin: -15px -15px 15px -15px; // 抵消父容器 padding
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 24px;
+    border-left: 4px solid #409eff; // 左侧蓝色装饰条
     
+    // 折叠状态下的修正
+    .is-collapsed & {
+        padding: 10px 0;
+        margin: -15px -5px 15px -5px;
+        border-left: none; // 折叠去掉装饰条
+    }
+
     .actions {
        display: flex;
        align-items: center;
@@ -133,7 +161,7 @@ const handleToggle = () => {
        .action-icon {
           cursor: pointer;
           color: #409eff;
-          font-size: 18px;
+          font-size: 16px;
           &:hover {
              opacity: 0.8;
           }

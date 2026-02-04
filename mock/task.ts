@@ -12,12 +12,12 @@ export default [
                 code: 200,
                 msg: 'success',
                 data: [
-                    { label: '待办事项', value: Random.integer(1, 10), icon: 'List', color: '#ff9900', type: 'todo' },
-                    { label: '已办事项', value: Random.integer(10, 50), icon: 'Check', color: '#19be6b', type: 'done' },
-                    { label: '待发事项', value: Random.integer(0, 5), icon: 'Promotion', color: '#909399', type: 'pending_send' },
-                    { label: '已发事项', value: Random.integer(5, 20), icon: 'Box', color: '#409eff', type: 'sent' },
-                    { label: '全部事项', value: Random.integer(50, 100), icon: 'Box', color: '#409eff', type: 'all' },
-                    { label: '超期事项', value: Random.integer(0, 5), icon: 'Warning', color: '#f56c6c', type: 'overdue' },
+                    { label: '待办任务', value: Random.integer(1, 10), icon: 'List', color: '#ff9900', type: 'todo' },
+                    { label: '已办任务', value: Random.integer(10, 50), icon: 'Check', color: '#19be6b', type: 'done' },
+                    { label: '待发任务', value: Random.integer(0, 5), icon: 'Promotion', color: '#909399', type: 'pending_send' },
+                    { label: '已发任务', value: Random.integer(5, 20), icon: 'Box', color: '#409eff', type: 'sent' },
+                    { label: '全部任务', value: Random.integer(50, 100), icon: 'Box', color: '#409eff', type: 'all' },
+                    { label: '超期任务', value: Random.integer(0, 5), icon: 'Warning', color: '#f56c6c', type: 'overdue' },
                 ]
             };
         },
@@ -49,7 +49,7 @@ export default [
             };
         },
     },
-    // 事项类型
+    // 任务类型
     {
         url: '/api/task/types',
         method: 'get',
@@ -94,6 +94,39 @@ export default [
                     list,
                     total: 400
                 }
+            };
+        },
+    },
+    // 用户列表
+    {
+        url: '/api/task/users',
+        method: 'get',
+        response: () => {
+            return {
+                code: 200,
+                msg: 'success',
+                data: [
+                    { label: '张三', value: '张三' },
+                    { label: '李四', value: '李四' },
+                    { label: '王五', value: '王五' },
+                    { label: '赵六', value: '赵六' },
+                    { label: '钱七', value: '钱七' },
+                    { label: '孙八', value: '孙八' },
+                    { label: '周九', value: '周九' },
+                    { label: '吴十', value: '吴十' },
+                ]
+            };
+        },
+    },
+    // 删除任务
+    {
+        url: '/api/task/delete',
+        method: 'post',
+        response: () => {
+            return {
+                code: 200,
+                msg: 'success',
+                data: null
             };
         },
     },
