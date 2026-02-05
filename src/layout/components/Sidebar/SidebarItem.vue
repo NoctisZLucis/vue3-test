@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!item.hidden">
+  <div v-if="!item.meta?.hidden && !item.hidden">
     <template v-if="hasOneShowingChild(item.children, item) && (!onlyOneChild.children || onlyOneChild.noShowingChildren) && !item.alwaysShow">
       <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
         <el-icon v-if="onlyOneChild.meta?.icon || item.meta?.icon">
@@ -50,7 +50,7 @@ const onlyOneChild = ref<any>(null);
 
 const hasOneShowingChild = (children: any[] = [], parent: any) => {
   const showingChildren = children.filter((item: any) => {
-    if (item.hidden) {
+    if (item.hidden || item.meta?.hidden) {
       return false
     } else {
       onlyOneChild.value = item

@@ -6,16 +6,8 @@ const Layout = () => import('@/layout/index.vue');
 const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
-        component: Layout,
-        redirect: '/dashboard',
-        children: [
-            {
-                path: 'dashboard',
-                name: 'Dashboard',
-                component: () => import('@/views/dashboard/index.vue'),
-                meta: { title: '首页', icon: 'House' }
-            },
-        ]
+        redirect: '/task/index',
+        meta: { hidden: true }
     },
     {
         path: '/task',
@@ -30,31 +22,52 @@ const routes: Array<RouteRecordRaw> = [
             }
         ]
     },
+
     {
-        path: '/nested',
+        path: '/report',
         component: Layout,
-        redirect: '/nested/menu1',
-        meta: { title: '路由嵌套', icon: 'Menu' },
+        redirect: '/report/template',
+        meta: { title: '报表管理', icon: 'DataAnalysis' },
         children: [
             {
-                path: 'menu1',
-                component: () => import('@/views/dashboard/index.vue'),
-                name: 'Menu1',
-                meta: { title: '菜单一', icon: 'Document' }
+                path: 'template',
+                name: 'ReportTemplate',
+                component: () => import('@/views/report/template/index.vue'),
+                meta: { title: '报表模板' }
             },
             {
-                path: 'menu2',
-                component: () => import('@/views/dashboard/index.vue'),
-                name: 'Menu2',
-                meta: { title: '菜单二', icon: 'Document' },
-                children: [
-                    {
-                        path: 'menu2-1',
-                        component: () => import('@/views/dashboard/index.vue'),
-                        name: 'Menu2-1',
-                        meta: { title: '菜单二-1' }
-                    }
-                ]
+                path: 'template/editor',
+                name: 'ReportTemplateEditor',
+                component: () => import('@/views/report/template/editor.vue'),
+                meta: { title: '模板编辑器', hidden: true }
+            }
+        ]
+    },
+    {
+        path: '/security',
+        component: Layout,
+        redirect: '/security/overview',
+        meta: { title: '安全总览', icon: 'Monitor' },
+        children: [
+            {
+                path: 'overview',
+                name: 'SecurityOverview',
+                component: () => import('@/views/security/overview/index.vue'),
+                meta: { title: '网络安全概览' }
+            }
+        ]
+    },
+    {
+        path: '/monitor',
+        component: Layout,
+        redirect: '/monitor/screen',
+        meta: { title: '监控大屏', icon: 'Platform' },
+        children: [
+            {
+                path: 'screen',
+                name: 'MonitorScreen',
+                component: () => import('@/views/monitor/screen/index.vue'),
+                meta: { title: '污染源监控系统', hidden: true } // Usually hidden from sidebar or special icon
             }
         ]
     }

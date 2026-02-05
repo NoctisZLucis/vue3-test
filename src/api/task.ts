@@ -71,7 +71,7 @@ export const getTaskList = (params: any) => {
  * 删除任务
  */
 export const deleteTask = (id: string) => {
-    return request.post('/api/task/delete', { id });
+    return request.post('/task/delete', { id });
 };
 
 export interface UserItem {
