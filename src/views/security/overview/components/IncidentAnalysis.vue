@@ -99,9 +99,9 @@ const pieData = [
 
 const pieOption = reactive({
     color: colors,
-    tooltip: { trigger: 'item' },
+    tooltip: { trigger: 'item' as const },
     legend: {
-        orient: 'vertical',
+        orient: 'vertical' as const,
         right: '0%',
         top: 'center',
         itemWidth: 10,
@@ -117,18 +117,18 @@ const pieOption = reactive({
     series: [
         {
             name: '事件分类',
-            type: 'pie',
+            type: 'pie' as const,
             radius: ['55%', '75%'],
             center: ['30%', '50%'],
             avoidLabelOverlap: false,
             label: {
                 show: true,
-                position: 'center',
+                position: 'center' as const,
                 formatter: `{total|3万}\n{text|事件总数}`,
                 rich: {
                     total: {
                         fontSize: 24,
-                        fontWeight: 'bold',
+                        fontWeight: 'bold' as const,
                         color: '#E6A23C', // Match warning color from image
                         padding: [0, 0, 4, 0]
                     },
@@ -152,7 +152,7 @@ const pieOption = reactive({
 const dates = ['02-20', '02-21', '02-22', '02-23', '02-24', '02-25', '02-26', '02-27'];
 const lineOption = reactive({
     color: colors,
-    tooltip: { trigger: 'axis' },
+    tooltip: { trigger: 'axis' as const },
     legend: {
         top: 0,
         right: 0, // Align right
@@ -170,7 +170,7 @@ const lineOption = reactive({
         containLabel: true
     },
     xAxis: {
-        type: 'category',
+        type: 'category' as const,
         boundaryGap: false,
         data: dates,
         axisLine: { lineStyle: { color: '#f0f0f0' } }, // Light line
@@ -178,23 +178,23 @@ const lineOption = reactive({
         axisTick: { show: false }
     },
     yAxis: {
-        type: 'value',
-        splitLine: { lineStyle: { type: 'dashed', color: '#f0f0f0' } },
+        type: 'value' as const,
+        splitLine: { lineStyle: { type: 'dashed' as const, color: '#f0f0f0' } },
         axisLabel: { color: '#909399', fontSize: 11 }
     },
     series: [
         {
-            name: '用户违规', type: 'line', data: [0, 0, 0, 0, 0, 0, 2, 5], symbol: 'none', itemStyle: {color: '#f56c6c'}
+            name: '用户违规', type: 'line' as const, data: [0, 0, 0, 0, 0, 0, 2, 5], symbol: 'none', itemStyle: {color: '#f56c6c'}
         },
         {
-            name: '运维异常', type: 'line', data: [0, 0, 0, 0, 0, 0, 5, 10], symbol: 'none', itemStyle: {color: '#409eff'}
+            name: '运维异常', type: 'line' as const, data: [0, 0, 0, 0, 0, 0, 5, 10], symbol: 'none', itemStyle: {color: '#409eff'}
         },
         {
-            name: '网络攻击', type: 'line', data: [0, 0, 0, 0, 0, 0, 0, 1], symbol: 'none', itemStyle: {color: '#e6a23c'}
+            name: '网络攻击', type: 'line' as const, data: [0, 0, 0, 0, 0, 0, 0, 1], symbol: 'none', itemStyle: {color: '#e6a23c'}
         },
         {
             name: '设备设施故障',
-            type: 'line',
+            type: 'line' as const,
             data: [100, 100, 100, 100, 100, 1500, 28000, 100], 
             smooth: true,
             symbol: 'none',
@@ -207,7 +207,7 @@ const lineOption = reactive({
             }
         },
         {
-            name: '威胁情报', type: 'line', data: [0, 0, 0, 0, 0, 0, 0, 0], symbol: 'none', itemStyle: {color: '#fa8c16'}
+            name: '威胁情报', type: 'line' as const, data: [0, 0, 0, 0, 0, 0, 0, 0], symbol: 'none', itemStyle: {color: '#fa8c16'}
         }
     ]
 });

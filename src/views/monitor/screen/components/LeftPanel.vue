@@ -94,25 +94,25 @@ const chart2Ref = ref();
 
 // Chart 1 Option
 const chart1Option = reactive({
-    tooltip: { trigger: 'axis' },
+    tooltip: { trigger: 'axis' as const },
     grid: { left: '3%', right: '4%', bottom: '3%', top: '30px', containLabel: true },
     xAxis: { 
-        type: 'category', 
+        type: 'category' as const, 
         data: ['呼和浩特', '包头', '呼伦贝尔', '兴安盟', '通辽', '赤峰', '锡林郭勒', '乌兰察布', '鄂尔多斯', '巴彦淖尔', '乌海', '阿拉善'],
         axisLabel: { color: '#8aaafb', interval: 0, fontSize: 10, rotate: 30 },
         axisLine: { lineStyle: { color: '#0d2d6d' } },
         axisTick: { show: false }
     },
     yAxis: { 
-        type: 'value', 
+        type: 'value' as const, 
         min: 90, 
-        splitLine: { lineStyle: { color: 'rgba(13, 45, 109, 0.5)', type: 'dashed' } },
+        splitLine: { lineStyle: { color: 'rgba(13, 45, 109, 0.5)', type: 'dashed' as const } },
         axisLabel: { color: '#8aaafb' }
     },
     series: [
-        { name: '传输率', type: 'line', symbol: 'circle', symbolSize: 6, data: [95, 93, 94, 98, 97, 96, 94, 95, 93, 94, 92, 98], itemStyle: { color: '#f56c6c' }, lineStyle: { width: 1 } },
-        { name: '有效率', type: 'line', symbol: 'diamond', symbolSize: 6, data: [96, 95, 97, 99, 98, 97, 95, 96, 94, 95, 93, 97], itemStyle: { color: '#409eff' }, lineStyle: { width: 1 } },
-        { name: '有效传输率', type: 'line', symbol: 'rect', symbolSize: 6, data: [97, 96, 98, 99.5, 99, 98, 96, 97, 95, 96, 94, 98], itemStyle: { color: '#a540ff' }, lineStyle: { width: 1 } }
+        { name: '传输率', type: 'line' as const, symbol: 'circle', symbolSize: 6, data: [95, 93, 94, 98, 97, 96, 94, 95, 93, 94, 92, 98], itemStyle: { color: '#f56c6c' }, lineStyle: { width: 1 } },
+        { name: '有效率', type: 'line' as const, symbol: 'diamond', symbolSize: 6, data: [96, 95, 97, 99, 98, 97, 95, 96, 94, 95, 93, 97], itemStyle: { color: '#409eff' }, lineStyle: { width: 1 } },
+        { name: '有效传输率', type: 'line' as const, symbol: 'rect', symbolSize: 6, data: [97, 96, 98, 99.5, 99, 98, 96, 97, 95, 96, 94, 98], itemStyle: { color: '#a540ff' }, lineStyle: { width: 1 } }
     ]
 });
 

@@ -1,3 +1,8 @@
+---
+name: Vue 3 + Vite + TS 企业级项目规范
+description: Vue 3 + Vite + TypeScript 企业级项目的完整开发规范,包含技术栈、目录结构、编程规范、组件封装、Layout 设计等最佳实践
+---
+
 # Vue 3 + Vite + TS 企业级项目规范手册
 
 ## 1. 核心技术栈 (Tech Stack)
@@ -26,9 +31,9 @@ src/
 
 ## 3. 编程规范 (Coding Standards)
 - **命名规范**: 
-  - 组件名：大驼峰 (PascalCase)，如 `UserTable.vue`。
-  - 方法名：小驼峰 (camelCase)，如 `fetchDataList`。
-  - 变量名：语义化。
+  - 组件名:大驼峰 (PascalCase),如 `UserTable.vue`。
+  - 方法名:小驼峰 (camelCase),如 `fetchDataList`。
+  - 变量名:语义化。
 - **注释要求**: 
   - 所有方法必须包含 JSDoc 中文注释。
   - 所有注释必须使用中文。
@@ -114,7 +119,7 @@ export default router;
 ```
 
 ### 4.3 全局消息提示封装 (src/utils/message.ts)
-防止消息弹窗无限堆叠，封装 `ElMessage` 实现最大显示数量限制（默认 3 条）。
+防止消息弹窗无限堆叠,封装 `ElMessage` 实现最大显示数量限制(默认 3 条)。
 ```typescript
 import { ElMessage, type MessageHandler, type MessageParams } from 'element-plus';
 
@@ -122,7 +127,7 @@ const messageInstances: MessageHandler[] = [];
 const MAX_MESSAGE_COUNT = 3;
 
 /**
- * 封装 ElMessage，限制最大同时显示数量
+ * 封装 ElMessage,限制最大同时显示数量
  */
 const Message = (options: MessageParams) => {
     if (messageInstances.length >= MAX_MESSAGE_COUNT) {
@@ -166,18 +171,18 @@ export default [
 ## 5. AI 指令集
 - 请严格遵循上述目录结构生成代码。
 - 生成 Vue 组件时必须使用 TypeScript 和 <script setup> 语法。
-- 所有的 API 调用必须封装在 api/ 目录下，通过 request.ts 调用。
+- 所有的 API 调用必须封装在 api/ 目录下,通过 request.ts 调用。
 
 ## 6. 组件页面书写规范 (Professional SFC Standards)
 
 ### 6.1 页面结构顺序 (SFC Order)
-所有 `.vue` 文件必须遵循以下块顺序：
-1. `<template>`：视图层
-2. `<script setup lang="ts">`：逻辑层
-3. `<style scoped lang="scss">`：样式层
+所有 `.vue` 文件必须遵循以下块顺序:
+1. `<template>`:视图层
+2. `<script setup lang="ts">`:逻辑层
+3. `<style scoped lang="scss">`:样式层
 
 ### 6.2 代码逻辑组织顺序 (Setup Logic Order)
-在 `<script setup>` 中，代码应按以下顺序排列，以增强可读性：
+在 `<script setup>` 中,代码应按以下顺序排列,以增强可读性:
 1. **Imports**: 插件、组件、工具函数、API。
 2. **DefineProps & DefineEmits**: 组件输入输出定义。
 3. **State**: 所有的 `ref` 和 `reactive` 变量。
@@ -191,22 +196,22 @@ export default [
 ## 7. 架构设计模式 (Architecture Patterns)
 
 ### 7.1 分层架构
-项目严格遵循 **视图(View) - 逻辑(Logic) - 接口(API)** 分离的原则：
+项目严格遵循 **视图(View) - 逻辑(Logic) - 接口(API)** 分离的原则:
 - **View (`views/`)**: 仅负责 UI 渲染和简单的交互事件绑定。
 - **Logic (`<script setup>`)**: 处理组件状态、表单校验、数据组装。复杂逻辑应抽离为 Combinables (`hooks/`)。
-- **API (`api/`)**: 所有 HTTP 请求必须封装为强类型的 API 函数，禁止在组件中直接调用 `request.get/post`。
+- **API (`api/`)**: 所有 HTTP 请求必须封装为强类型的 API 函数,禁止在组件中直接调用 `request.get/post`。
 
 ### 7.2 数据流向
 `Component` -> `API Function` -> `Request Interceptor` -> `Server/Mock` -> `Response Interceptor` -> `Component`。
-异常处理统一在 **Response Interceptor** 中进行 Toast 提示，组件仅需处理在此之后的业务逻辑（或通过 `try/catch` 处理特定错误）。
+异常处理统一在 **Response Interceptor** 中进行 Toast 提示,组件仅需处理在此之后的业务逻辑(或通过 `try/catch` 处理特定错误)。
 
 ## 8. 组件封装规范 (Component Encapsulation)
 
 ### 8.1 封装原则
 - **单一职责**: 一个组件只做一件事。
 - **Props 强类型**: 必须为每个 Prop 定义类型和默认值。
-- **样式隔离**: 必须使用 `scoped`，禁止在组件内书写全局样式。
-- **Slots 扩展**: 关键节点预留 `slot`，增加组件灵活性。
+- **样式隔离**: 必须使用 `scoped`,禁止在组件内书写全局样式。
+- **Slots 扩展**: 关键节点预留 `slot`,增加组件灵活性。
 
 ### 8.2 标准组件示例 (src/components/BaseDialog.vue)
 
@@ -315,7 +320,7 @@ defineExpose({
 ## 9. Layout 组件规范
 
 ### 9.1 整体布局 (Layout Structure)
-- **入口文件**: `src/layout/index.vue`，采用 Flex 布局管理整体结构。
+- **入口文件**: `src/layout/index.vue`,采用 Flex 布局管理整体结构。
 - **DOM 结构**:
   ```html
   <div class="app-wrapper">
@@ -329,37 +334,37 @@ defineExpose({
     </div>
   </div>
   ```
-- **交互逻辑**: 通过 Pinia (`appStore.sidebar.opened`) 控制 `.app-wrapper` 的类名 (`openSidebar`/`hideSidebar`)，从而通过 CSS Transition 实现侧边栏的平滑展开与折叠。
+- **交互逻辑**: 通过 Pinia (`appStore.sidebar.opened`) 控制 `.app-wrapper` 的类名 (`openSidebar`/`hideSidebar`),从而通过 CSS Transition 实现侧边栏的平滑展开与折叠。
 
 ### 9.2 核心组件构成 (Core Components)
 
 #### 1. Sidebar (侧边栏)
 - **路径**: `src/layout/components/Sidebar`
-- **数据源**: 直接读取 `vue-router` 的 `routes` 配置 (`useRouter().options.routes`)，实现了 **路由即菜单**。
+- **数据源**: 直接读取 `vue-router` 的 `routes` 配置 (`useRouter().options.routes`),实现了 **路由即菜单**。
 - **递归渲染**: 核心组件 `SidebarItem.vue` 支持无限级菜单嵌套。
-  - **单节点**: 无子路由或只有一个有效子路由时，渲染为 `<el-menu-item>`。
-  - **嵌套节点**: 有多个子路由时，渲染为 `<el-sub-menu>` 并递归调用自身。
-- **路径解析**: 组件内建 `resolvePath` 方法，自动处理父子路由路径的拼接（例如 `/nested` + `/menu1` -> `/nested/menu1`）。
+  - **单节点**: 无子路由或只有一个有效子路由时,渲染为 `<el-menu-item>`。
+  - **嵌套节点**: 有多个子路由时,渲染为 `<el-sub-menu>` 并递归调用自身。
+- **路径解析**: 组件内建 `resolvePath` 方法,自动处理父子路由路径的拼接(例如 `/nested` + `/menu1` -> `/nested/menu1`)。
 
 #### 2. Navbar (顶部导航)
 - **路径**: `src/layout/components/Navbar.vue`
-- **样式**: 深色主题设计，与侧边栏背景色保持一致 (`#151e2b`)，移除底部阴影以实现视觉一体化。
+- **样式**: 深色主题设计,与侧边栏背景色保持一致 (`#151e2b`),移除底部阴影以实现视觉一体化。
 - **功能**: 集成 `Hamburger` (折叠控制器) 和右侧用户信息/操作区。
 
 #### 3. TagsView (标签页导航)
 - **路径**: `src/layout/components/TagsView`
 - **样式**: 采用 **Tab 选项卡** 风格。
-  - **激活态**: 白色背景 + 主色文字 + 底部连接线，强调当前上下文。
-  - **交互**: 支持点击切换、右键菜单（关闭当前/其他/全部）。
+  - **激活态**: 白色背景 + 主色文字 + 底部连接线,强调当前上下文。
+  - **交互**: 支持点击切换、右键菜单(关闭当前/其他/全部)。
 
 #### 4. AppMain (主内容区)
 - **路径**: `src/layout/components/AppMain.vue`
 - **架构**: 封装 `<router-view>` 并通过 `v-slot` 集成 `<transition>` 动画 (`fade-transform`) 和 `<keep-alive>` 缓存机制。
-- **样式**: 设定全局背景色 (`$main-bg: #f0f2f5`)，提供视觉层级区分。
+- **样式**: 设定全局背景色 (`$main-bg: #f0f2f5`),提供视觉层级区分。
 
 ### 9.3 最佳实践 (Best Practices)
-- **Layout 常量化**: 在 `src/router/index.ts` 中，应提取 `Layout` 为常量 (`const Layout = () => import('@/layout/index.vue')`)，避免重复编写 `import` 语句，便于统一维护。
-- **组件统一导出**: 所有 Layout 子组件应在 `src/layout/components/index.ts` 中统一导出，保持引用路径简洁。
+- **Layout 常量化**: 在 `src/router/index.ts` 中,应提取 `Layout` 为常量 (`const Layout = () => import('@/layout/index.vue')`),避免重复编写 `import` 语句,便于统一维护。
+- **组件统一导出**: 所有 Layout 子组件应在 `src/layout/components/index.ts` 中统一导出,保持引用路径简洁。
   ```typescript
   export { default as Navbar } from './Navbar.vue'
   export { default as Sidebar } from './Sidebar/index.vue'
@@ -369,8 +374,8 @@ defineExpose({
 ## 10. 样式开发规范 (Style Guidelines)
 
 ### 10.1 架构设计 (Architecture)
-- **入口文件**: 样式虽最终作用于 `index.html`，但必须通过 `src/main.ts` 引入 `src/styles/index.scss` 进行统一注入，严禁在 `index.html` 中编写 `<style>`。
-- **根节点**: `#app` (定义在 `index.html`) 是应用挂载点，必须设置 `width: 100%` 和 `height: 100%` 以继承 `html, body` 的高度。
+- **入口文件**: 样式虽最终作用于 `index.html`,但必须通过 `src/main.ts` 引入 `src/styles/index.scss` 进行统一注入,严禁在 `index.html` 中编写 `<style>`。
+- **根节点**: `#app` (定义在 `index.html`) 是应用挂载点,必须设置 `width: 100%` 和 `height: 100%` 以继承 `html, body` 的高度。
 
 ### 10.2 技术方案
 - **预处理器**: SCSS (开启全局变量自动注入)。
@@ -379,10 +384,10 @@ defineExpose({
 
 ### 10.3 响应式适配策略
 - **基准分辨率**: 1920px * 1080px (设计稿基准)。
-- **最低支持**: 1440px * 900px (布局不破碎，无横向滚动条)。
-- **适配工具**: 使用 SCSS Mixins 处理断点，避免在业务代码中散落 `@media`。
-- **Flex/Grid 优先**：禁止使用 `float` 或固定宽度的 `div`。
-- **容器优先原则**：使用 `@container` 代替 `@media`，确保功能模块在任何父容器下都能自适应
+- **最低支持**: 1440px * 900px (布局不破碎,无横向滚动条)。
+- **适配工具**: 使用 SCSS Mixins 处理断点,避免在业务代码中散落 `@media`。
+- **Flex/Grid 优先**:禁止使用 `float` 或固定宽度的 `div`。
+- **容器优先原则**:使用 `@container` 代替 `@media`,确保功能模块在任何父容器下都能自适应
 
 ### 10.4 滚动条规范
 - **全局禁止滚动**: `html`, `body`, `#app` 必须设置 `overflow: hidden`。
@@ -392,7 +397,7 @@ defineExpose({
 ```text
 src/styles/
 ├── element-ui.scss   # 覆盖 Element Plus 默认样式
-├── index.scss        # 样式入口，统一引入其他文件
+├── index.scss        # 样式入口,统一引入其他文件
 ├── mixins.scss       # SCSS 混合宏 (Mixins)
 ├── reset.scss        # 浏览器样式重置
 ├── sidebar.scss      # 侧边栏专用样式

@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Reading, Files, Printer, HelpFilled, Avatar, Platform, Coin, User, Operation } from '@element-plus/icons-vue';
+// 图标通过 component :is 以字符串方式动态引用，Element Plus 已全局注册
 
 const notDeployed = ref([
     { name: '三合一', count: 34, icon: 'Reading', color: '#f56c6c' },

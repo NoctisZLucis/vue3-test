@@ -31,7 +31,7 @@ import { ref, onMounted, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getTemplateDetail, saveTemplate } from '@/api/report';
 import Message from '@/utils/message';
-import { ArrowDown, ArrowLeft } from '@element-plus/icons-vue';
+import { ArrowDown } from '@element-plus/icons-vue';
 // 导出相关依赖
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
@@ -294,7 +294,7 @@ const downloadWordB = () => {
       </html>
     `;
 
-    asBlob(fullHtml).then((blob: Blob) => {
+    asBlob(fullHtml).then((blob: any) => {
         saveAs(blob, `${form.name || '报表'}_schemeB.docx`);
     });
 };

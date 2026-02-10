@@ -22,24 +22,24 @@ import SecurityReport from './components/SecurityReport.vue';
 
 <style scoped lang="scss">
 .security-overview {
-  padding: 20px;
+  padding: 10px;
   background-color: #f0f2f5;
   min-height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 
   .top-row {
     display: grid;
     grid-template-columns: 1fr 1.2fr 1fr;
-    gap: 20px;
+    gap: 10px;
     height: 380px;
   }
 
   .bottom-row {
      display: grid;
      grid-template-columns: 2.2fr 1fr;
-     gap: 20px;
+     gap: 10px;
      flex: 1;
      min-height: 400px;
   }

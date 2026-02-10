@@ -145,7 +145,7 @@ const initMapChart = () => {
            {
                type: 'custom',
                coordinateSystem: 'geo',
-               renderItem: (params: any, api: any) => {
+               renderItem: (_params: any, api: any) => {
                    const coords = api.coord([api.value(0), api.value(1)]);
                    const value = api.value(2);
                    return {
